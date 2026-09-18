@@ -1,6 +1,7 @@
 package com.chetan.taskflow.user;
 
 import com.chetan.taskflow.auth.RegisterRequest;
+import com.chetan.taskflow.common.exception.EmailAlreadyRegisteredException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -39,7 +40,7 @@ public class UserService {
                 email.trim().toLowerCase(Locale.ROOT);
 
         if (userRepository.existsByEmail(normalizedEmail)) {
-            throw new IllegalArgumentException(
+            throw new EmailAlreadyRegisteredException(
                     "Email is already registered"
             );
         }
