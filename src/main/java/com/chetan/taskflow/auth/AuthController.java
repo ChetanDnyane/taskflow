@@ -35,8 +35,12 @@ public class AuthController {
     public ResponseEntity<String> login(
             @Valid @RequestBody LoginRequest request) {
 
+        System.out.println(">>> LOGIN CONTROLLER REACHED <<<");
+
         String normalizedEmail =
                 request.email().trim().toLowerCase(Locale.ROOT);
+
+        System.out.println(">>> ABOUT TO AUTHENTICATE <<<");
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -44,6 +48,8 @@ public class AuthController {
                         request.password()
                 )
         );
+
+        System.out.println(">>> AUTHENTICATION SUCCESSFUL <<<");
 
         return ResponseEntity.ok("Login successful");
     }
