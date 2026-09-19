@@ -19,6 +19,7 @@ public class AuthController {
 
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
 
     @PostMapping("/register")
     public ResponseEntity<UserResponse> register(
@@ -32,15 +33,11 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(
+    public ResponseEntity<LoginResponse> login(
             @Valid @RequestBody LoginRequest request) {
-
-        System.out.println(">>> LOGIN CONTROLLER REACHED <<<");
 
         String normalizedEmail =
                 request.email().trim().toLowerCase(Locale.ROOT);
-
-        System.out.println(">>> ABOUT TO AUTHENTICATE <<<");
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -49,8 +46,10 @@ public class AuthController {
                 )
         );
 
-        System.out.println(">>> AUTHENTICATION SUCCESSFUL <<<");
+        String token = jwtService.generateToken(normalizedEmail);
 
-        return ResponseEntity.ok("Login successful");
+        return ResponseEntity.ok(
+                new LoginResponse(token)
+        );
     }
 }
