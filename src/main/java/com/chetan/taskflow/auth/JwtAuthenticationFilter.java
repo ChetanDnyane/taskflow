@@ -1,5 +1,16 @@
 package com.chetan.taskflow.auth;
 
+// <editor-fold defaultstate="collapsed" desc="Authenticate an HTTP request using its bearer token">
+/*
+ * Runs in the security filter chain before username/password authentication. A missing or differently
+ * prefixed Authorization header passes onward; SecurityConfig decides whether anonymous access is allowed.
+ * A bearer token is verified by JwtService, then its subject is resolved against the current user table.
+ * The principal and current role are placed in the request security context, not taken from token roles.
+ * Malformed, expired, empty or unknown-user tokens end the request with INVALID_TOKEN and HTTP 401.
+ * This filter writes its own JSON because controller advice does not handle these filter-stage errors.
+ */
+// </editor-fold>
+
 import com.chetan.taskflow.config.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -38,6 +49,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
+        // <editor-fold defaultstate="collapsed" desc="Validate the bearer credential">
+        /*
+         * Seven characters remove exactly the Bearer prefix and its space. Even an empty remainder
+         * is passed to the parser, whose IllegalArgumentException is handled below. Successful parsing
+         * precedes user lookup. An existing authentication is preserved rather than replaced.
+         */
+        // </editor-fold>
         String token = authHeader.substring(7);
         try {
             String email = jwtService.extractEmail(token);
@@ -61,6 +79,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext()
                         .setAuthentication(authentication);
             }
+        // <editor-fold defaultstate="collapsed" desc="Stop invalid requests before controllers execute">
+        /*
+         * JwtException here comes from io.jsonwebtoken, the library used by JwtService. It covers
+         * signature, expiry and format failures. UsernameNotFoundException covers removed accounts.
+         * Returning after writing JSON prevents downstream code from executing on a rejected token.
+         */
+        // </editor-fold>
         } catch (JwtException | IllegalArgumentException | UsernameNotFoundException exception) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");

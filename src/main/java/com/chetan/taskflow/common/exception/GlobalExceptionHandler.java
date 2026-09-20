@@ -1,5 +1,15 @@
 package com.chetan.taskflow.common.exception;
 
+// <editor-fold defaultstate="collapsed" desc="Translate controller failures into API error responses">
+/*
+ * RestControllerAdvice applies across controllers. Each ExceptionHandler selects a status and a
+ * JSON object with a stable error code plus a human-readable message. Validation also includes
+ * fieldErrors. Login authentication failures intentionally share one message for unknown users and
+ * wrong passwords. Missing and foreign-owned tasks share TASK_NOT_FOUND so ownership is not exposed.
+ * Security filter failures use handlers in SecurityConfig or JwtAuthenticationFilter instead.
+ */
+// </editor-fold>
+
 import com.chetan.taskflow.task.TaskNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +40,14 @@ public class GlobalExceptionHandler {
                 .body(response);
     }
 
+    // <editor-fold defaultstate="collapsed" desc="Collect one validation message per field">
+    /*
+     * LinkedHashMap preserves encounter order. putIfAbsent keeps the first reported constraint
+     * for a field instead of overwriting it with another failure. The envelope combines the
+     * VALIDATION_FAILED code, a summary, and per-field messages for client form feedback.
+     * The existing println is diagnostic output and is not part of the HTTP response.
+     */
+    // </editor-fold>
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>>
     handleValidationErrors(

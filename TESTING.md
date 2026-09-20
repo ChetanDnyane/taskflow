@@ -1,5 +1,22 @@
 # TaskFlow workflow tests
 
+<details>
+<summary>How to read this file and the test comments</summary>
+
+This document maps API behavior to the test suites and explains how to run them.
+The Java files now contain collapsible explanation blocks beside each workflow
+and helper. Each block explains the setup, the behavior under test and what the
+assertions establish. Expand a block in IntelliJ using its gutter folding control;
+the comments are marked `defaultstate="collapsed"` so supporting editors initially
+hide the explanation while keeping the executable test visible.
+
+For the overall request flow and folding support in other file formats, see
+[READING_GUIDE.md](READING_GUIDE.md). The verification count later in this file
+records the earlier September 20 run; rerunning Maven produces fresh Surefire
+reports under `target/surefire-reports/`.
+
+</details>
+
 Start with `src/test/java/com/chetan/taskflow/WorkflowTest.java`. It exercises every currently implemented API workflow through MockMvc using the real Spring application, security filter chain, password encoder, services and JPA repositories. Method names describe the expected behavior. Parameterized tests repeat a scenario for each input shown in `@ValueSource` or `@MethodSource`.
 
 ## Workflow map

@@ -1,3 +1,10 @@
+# region Generated files and local tooling
+# Keep build output, downloaded wrapper binaries and personal IDE settings out
+# of commits. HELP.md is the generated Spring starter help document. A leading
+# exclamation mark re-includes matching source directories that happen to be
+# named target or build; ordinary build output remains ignored.
+# Ignore rules affect untracked files, not files already tracked by Git.
+# endregion
 HELP.md
 target/
 .mvn/wrapper/maven-wrapper.jar

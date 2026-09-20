@@ -1,5 +1,14 @@
 package com.chetan.taskflow.auth;
 
+// <editor-fold defaultstate="collapsed" desc="Focused token contract test without Spring">
+/*
+ * Constructs JwtService with a public test-only key, generates a token and parses it with a separately
+ * configured JJWT parser to verify its signature and claims. The one-second timing allowance accounts
+ * for JWT timestamps having second precision. Expiry must be exactly one hour after issue time, and
+ * password fields must be absent. Invalid-token HTTP behavior is covered in WorkflowTest.
+ */
+// </editor-fold>
+
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

@@ -1,2 +1,7 @@
+# region Portable wrapper line endings
+# Keep the Unix shell launcher in LF form so its interpreter line stays valid.
+# Windows command scripts use CRLF. Git applies these rules on checkout and
+# normalization; the rules do not change the commands executed by the scripts.
+# endregion
 /mvnw text eol=lf
 *.cmd text eol=crlf

@@ -1,5 +1,15 @@
 package com.chetan.taskflow.config;
 
+// <editor-fold defaultstate="collapsed" desc="Bridge persisted users to Spring Security principals">
+/*
+ * Both password login and bearer-token authentication use this service to look up a normalized email.
+ * A missing account throws UsernameNotFoundException. A found account is converted into Spring
+ * Security UserDetails: email becomes username, the stored BCrypt hash is used for password checks,
+ * and roles(...) prefixes the enum name with ROLE_ so hasRole(...) authorization rules match.
+ * Loading on each bearer request means deleted users and changed roles are reflected immediately.
+ */
+// </editor-fold>
+
 import com.chetan.taskflow.user.User;
 import com.chetan.taskflow.user.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,5 +1,14 @@
 package com.chetan.taskflow.task;
 
+// <editor-fold defaultstate="collapsed" desc="HTTP adapter for authenticated task operations">
+/*
+ * Maps POST/list GET to /api/tasks and item GET/PUT/DELETE to /api/tasks/{id}. JSON bodies are validated
+ * before service calls; Spring converts the path ID to Long. The service owns business rules and
+ * user scoping. Create returns 201; reads and updates return 200; successful delete returns 204
+ * without a body. Missing/foreign tasks are mapped to 404 by GlobalExceptionHandler.
+ */
+// </editor-fold>
+
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

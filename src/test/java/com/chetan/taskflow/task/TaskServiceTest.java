@@ -1,5 +1,15 @@
 package com.chetan.taskflow.task;
 
+// <editor-fold defaultstate="collapsed" desc="Unit test of an owned-task lookup">
+/*
+ * Mockito creates repository doubles and injects them into TaskService without a Spring context or
+ * database. A manually installed principal supplies the email; stubbed lookups resolve it to owner
+ * ID 1 and task ID 10. Assertions verify the DTO mapping. This isolates service logic but does not
+ * prove generated SQL or HTTP security behavior; those are covered by the workflow integration tests.
+ * The AfterEach callback clears thread-local authentication to avoid leaking state into other tests.
+ */
+// </editor-fold>
+
 import com.chetan.taskflow.user.User;
 import com.chetan.taskflow.user.UserRepository;
 import org.junit.jupiter.api.Test;

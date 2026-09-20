@@ -1,5 +1,17 @@
 package com.chetan.taskflow.task;
 
+// <editor-fold defaultstate="collapsed" desc="Database representation of a user-owned task">
+/*
+ * JPA maps this mutable entity to tasks; Lombok generates getters, setters and the no-argument
+ * constructor required for persistence. The database generates the ID using an identity column.
+ * Status/priority are stored as enum names rather than ordinals; renaming them affects stored data.
+ * Every task has one required owner through user_id. LAZY delays loading that user until accessed.
+ * Description and due date can be null. Hibernate fills createdAt on insertion and updatedAt on writes;
+ * the due date is a LocalDate, while audit timestamps are Instants. APIs return TaskResponse instead
+ * of serializing the entity and its lazy user relationship.
+ */
+// </editor-fold>
+
 import com.chetan.taskflow.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;

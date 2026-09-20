@@ -1,5 +1,16 @@
 package com.chetan.taskflow.config;
 
+// <editor-fold defaultstate="collapsed" desc="Define request authentication and authorization">
+/*
+ * This API expects explicit bearer headers. CSRF, form login and HTTP Basic are disabled; stateless
+ * session management prevents reuse of authentication from an earlier request. Registration/login
+ * POSTs and error dispatches are public; the admin-test path requires ADMIN; everything else requires
+ * authentication. Matchers are checked in order. The admin rule does not itself create a controller.
+ * Authentication failures return 401 JSON; authenticated callers lacking permission get 403 JSON.
+ * The custom JWT filter runs before UsernamePasswordAuthenticationFilter to populate the principal.
+ */
+// </editor-fold>
+
 import com.chetan.taskflow.auth.JwtAuthenticationFilter;
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,6 +27,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig {
 
+    // <editor-fold defaultstate="collapsed" desc="Security bean construction">
+    /*
+     * Spring invokes these factory methods to supply shared security infrastructure. The filter
+     * chain defines request policy; AuthenticationManager is obtained from Spring configuration
+     * and used by AuthController for password login with the configured user service/encoder.
+     */
+    // </editor-fold>
     @Bean
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http,
@@ -81,6 +99,13 @@ public class SecurityConfig {
         return http.build();
     }
 
+    // <editor-fold defaultstate="collapsed" desc="Security bean construction">
+    /*
+     * Spring invokes these factory methods to supply shared security infrastructure. The filter
+     * chain defines request policy; AuthenticationManager is obtained from Spring configuration
+     * and used by AuthController for password login with the configured user service/encoder.
+     */
+    // </editor-fold>
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration configuration) throws Exception {

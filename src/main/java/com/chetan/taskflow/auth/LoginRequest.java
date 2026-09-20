@@ -1,5 +1,13 @@
 package com.chetan.taskflow.auth;
 
+// <editor-fold defaultstate="collapsed" desc="Validated login JSON contract">
+/*
+ * The record provides immutable email/password values for AuthController. NotBlank rejects null,
+ * empty and whitespace-only values; Email checks format. Validation runs because the controller uses
+ * @Valid. Email normalization occurs in the controller after validation; the password is unchanged.
+ */
+// </editor-fold>
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 

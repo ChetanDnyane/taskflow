@@ -1,4 +1,14 @@
 #!/bin/sh
+# region How the Unix Maven launcher works
+# This is the project-local entry point for Maven on Unix-like shells. It reads
+# .mvn/wrapper/maven-wrapper.properties, derives a cache directory from the URL,
+# reuses an installed distribution or downloads/unpacks it, then execs Maven with
+# the original arguments. JAVA_HOME or PATH supplies Java when needed. Downloads
+# can use curl, wget or the Java fallback; checksum checking is conditional on a
+# configured distributionSha256Sum. The existing comments below explain platform
+# handling, temporary-file cleanup and download details. Regenerating the Maven
+# wrapper may replace these project-specific notes. Region folding is editor-dependent.
+# endregion
 # ----------------------------------------------------------------------------
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file

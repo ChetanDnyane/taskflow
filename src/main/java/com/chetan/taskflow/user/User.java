@@ -1,5 +1,16 @@
 package com.chetan.taskflow.user;
 
+// <editor-fold defaultstate="collapsed" desc="Persistent account and credentials">
+/*
+ * Maps to users with a database-generated identity ID and a unique email column. UserService stores
+ * normalized email and a BCrypt password hash; the entity itself does not normalize or hash inputs.
+ * The role is stored as text and defaults to USER. Lombok supplies accessors and a JPA constructor.
+ * The PrePersist callback assigns createdAt immediately before insertion, and the column cannot be
+ * updated through the mapping. UserResponse deliberately excludes passwordHash from API output.
+ * Database uniqueness is the final constraint; the service duplicate check alone is not atomic.
+ */
+// </editor-fold>
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,6 +45,12 @@ public class User {
     @Column(name = "created_at", nullable = false, updatable = false)   //  PostGreSQL - created_at TIMESTAMPTZ NOT NULL
     private Instant createdAt;
 
+    // <editor-fold defaultstate="collapsed" desc="Assign creation time at persistence">
+    /*
+     * JPA invokes this callback before an initial insert. It uses the application clock, not a
+     * database default. updatable=false on the column preserves the initial value on later updates.
+     */
+    // </editor-fold>
     @PrePersist
     private void setCreatedAt() {
         createdAt = Instant.now();

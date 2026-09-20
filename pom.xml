@@ -1,14 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+    PROJECT BUILD: Maven reads this model to resolve dependencies, compile Java,
+    run tests and package the Spring Boot application. XML comment blocks can be
+    folded in editors with XML folding. Expand the notes beside each section
+    to understand why it is included; no build values are changed by these notes.
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
+        <!--
+            Spring Boot's parent supplies compatible dependency versions and
+            Maven plugin defaults. The empty relativePath forces parent lookup
+            through repositories instead of a parent pom.xml on the local disk.
+        -->
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>4.0.8</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.chetan</groupId>
+    <!--
+        Coordinates identify this artifact for Maven. SNAPSHOT denotes a changing
+        development version. Empty descriptive metadata below overrides inherited
+        parent information; it does not configure runtime application behavior.
+    -->
 	<artifactId>taskflow</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name/>
@@ -27,9 +43,23 @@
 		<url/>
 	</scm>
 	<properties>
+        <!-- Java 21 is the compilation target; run Maven with a compatible JDK. -->
 		<java.version>21</java.version>
 	</properties>
 	<dependencies>
+        <!--
+            Application capabilities: MVC exposes controllers; Validation checks
+            request records; JPA supplies repositories and Hibernate mappings;
+            Security supplies authentication and authorization infrastructure.
+            Actuator adds operational endpoints, still subject to SecurityConfig.
+            Flyway/PostgreSQL support database migrations, though no migration
+            scripts are currently present. The OAuth2 resource-server starter is
+            available, but this application uses its own JJWT bearer filter.
+
+            Scope matters: H2 is test-only; PostgreSQL and DevTools are runtime
+            dependencies. DevTools is optional for downstream consumers. The test
+            starters provide test-specific support and are not application APIs.
+        -->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
@@ -116,12 +146,22 @@
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
+            <!--
+                Lombok generates constructors/getters/setters while compiling.
+                Source files rely on these generated methods for injection and
+                entity access; there are no handwritten equivalents to find.
+            -->
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-api</artifactId>
+            <!--
+                Compile against the JJWT API. The matching implementation and
+                Jackson JSON adapter below are loaded at runtime; all three
+                modules use the same explicitly pinned version.
+            -->
 			<version>0.12.6</version>
 		</dependency>
 
@@ -147,6 +187,12 @@
 	</dependencies>
 
 	<build>
+        <!--
+            The Boot plugin supports spring-boot:run and repackaging the compiled
+            app with dependencies into an executable archive. Maven's standard
+            test phase runs the JUnit suites under src/test/java via Surefire,
+            whose defaults are inherited from the Spring Boot parent.
+        -->
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

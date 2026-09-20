@@ -1,5 +1,14 @@
 package com.chetan.taskflow.task;
 
+// <editor-fold defaultstate="collapsed" desc="Full replacement of editable task fields">
+/*
+ * PUT requires title, status and priority; description and dueDate are optional and become null
+ * when omitted. This is not a partial patch: TaskService assigns every editable field from this
+ * record. Validation enforces title/description sizes before mutation. Ownership and audit fields
+ * are excluded so callers cannot reassign a task or supply persistence timestamps.
+ */
+// </editor-fold>
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

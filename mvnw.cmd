@@ -1,4 +1,14 @@
 <# : batch portion
+@REM region How the Windows Maven launcher works
+@REM This file is both a command script and an embedded PowerShell script.
+@REM CMD invokes PowerShell to read wrapper properties and locate or download
+@REM the pinned Maven distribution. PowerShell prints MVN_CMD for CMD to capture;
+@REM CMD then invokes Maven with the original arguments and clears download
+@REM credentials from its environment. Cached distributions avoid repeat downloads.
+@REM Keep the opening hybrid-script marker first: PowerShell treats this batch
+@REM section as a block comment. Notes below describe download and checksum steps.
+@REM Region folding depends on the editor. Wrapper regeneration may replace notes.
+@REM endregion
 @REM ----------------------------------------------------------------------------
 @REM Licensed to the Apache Software Foundation (ASF) under one
 @REM or more contributor license agreements.  See the NOTICE file
