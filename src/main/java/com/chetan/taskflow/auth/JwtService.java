@@ -10,6 +10,7 @@ package com.chetan.taskflow.auth;
  */
 // </editor-fold>
 
+import com.chetan.taskflow.user.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -17,7 +18,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Date;
 
@@ -48,12 +48,14 @@ public class JwtService {
      * The caller supplies the normalized email; this method does not authenticate passwords.
      */
     // </editor-fold>
-    public String generateToken(String email) {
+    public String generateToken(User user) {
 
         Instant now = Instant.now();
 
         return Jwts.builder()
-                .subject(email)
+                .subject(user.getEmail())
+                .claim("userId", user.getId())
+                .claim("role", user.getRole().name())
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(now.plusSeconds(3600)))
                 .signWith(signingKey)

@@ -10,7 +10,6 @@ package com.chetan.taskflow.common.exception;
  */
 // </editor-fold>
 
-import com.chetan.taskflow.task.TaskNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -88,20 +87,6 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
-                .body(response);
-    }
-
-    @ExceptionHandler(TaskNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleTaskNotFound(
-            TaskNotFoundException exception) {
-
-        Map<String, String> response = Map.of(
-                "error", "TASK_NOT_FOUND",
-                "message", exception.getMessage()
-        );
-
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
                 .body(response);
     }
 }

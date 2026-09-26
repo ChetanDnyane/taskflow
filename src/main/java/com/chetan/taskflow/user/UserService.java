@@ -12,7 +12,6 @@ package com.chetan.taskflow.user;
 import com.chetan.taskflow.auth.RegisterRequest;
 import com.chetan.taskflow.common.exception.EmailAlreadyRegisteredException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -71,6 +70,12 @@ public class UserService {
         }
 
         return normalizedEmail;
+    }
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new IllegalStateException("User not found"));
     }
 
     // <editor-fold defaultstate="collapsed" desc="Exclude the password hash from registration output">

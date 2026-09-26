@@ -9,6 +9,7 @@ package com.chetan.taskflow.auth;
  */
 // </editor-fold>
 
+import com.chetan.taskflow.user.User;
 import com.chetan.taskflow.user.UserResponse;
 import com.chetan.taskflow.user.UserService;
 import jakarta.validation.Valid;
@@ -69,7 +70,9 @@ public class AuthController {
                 )
         );
 
-        String token = jwtService.generateToken(normalizedEmail);
+        User user = userService.findByEmail(normalizedEmail);
+
+        String token = jwtService.generateToken(user);
 
         return ResponseEntity.ok(
                 new LoginResponse(token)
