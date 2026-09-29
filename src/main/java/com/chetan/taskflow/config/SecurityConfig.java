@@ -84,6 +84,7 @@ public class SecurityConfig {
                         .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                        .requestMatchers("/actuator/health/**").permitAll()
                         .requestMatchers("/error").permitAll()
 
                         .requestMatchers("/api/auth/admin-test").hasRole("ADMIN")
